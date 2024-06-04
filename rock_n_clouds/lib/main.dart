@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rock_n_clouds/pages/home/home_page.dart';
 import 'package:rock_n_clouds/service_locator.dart';
-import 'package:rock_n_clouds/utils/constants.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final hive = await BoxCollection.open(
-    'RockNClouds',
-    {
-      Constants.weatherBoxName,
-    },
-    path: './',
-  );
-  ServiceLocator.setup(hive);
+  await Hive.initFlutter();
+  ServiceLocator.setup();
   runApp(const MyApp());
 }
 

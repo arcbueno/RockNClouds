@@ -1,4 +1,5 @@
 import 'package:rock_n_clouds/database/weather_dao.dart';
+import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 import 'package:rock_n_clouds/service_locator.dart';
 import 'package:rock_n_clouds/utils/network_utils.dart';
 import 'package:weather/weather.dart';
@@ -11,7 +12,7 @@ class WeatherRepository {
       : _weatherApi = weatherFactory ?? getIt.get<WeatherFactory>(),
         _weatherDao = weatherDao ?? getIt.get<WeatherDao>();
 
-  Future<Weather> getCurrentWeather(double lat, double lon) async {
+  Future<WeatherDomain> getCurrentWeather(double lat, double lon) async {
     var isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
       var onlineData = await _weatherApi.currentWeatherByLocation(lat, lon);
@@ -21,7 +22,7 @@ class WeatherRepository {
     return _weatherDao.getCurrentWeather(lat, lon);
   }
 
-  Future<Weather> getWeatherByCity(String cityName) async {
+  Future<WeatherDomain> getWeatherByCity(String cityName) async {
     var isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
       var onlineData = await _weatherApi.currentWeatherByCityName(cityName);
@@ -31,7 +32,7 @@ class WeatherRepository {
     return _weatherDao.getWeatherByCity(cityName);
   }
 
-  Future<List<Weather>> getFiveDaysWeather(double lat, double lon) async {
+  Future<List<WeatherDomain>> getFiveDaysWeather(double lat, double lon) async {
     var isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
       var onlineData = await _weatherApi.fiveDayForecastByLocation(lat, lon);
@@ -41,7 +42,7 @@ class WeatherRepository {
     return _weatherDao.getFiveDaysWeather(lat, lon);
   }
 
-  Future<List<Weather>> getFiveDaysWeatherByCity(String cityName) async {
+  Future<List<WeatherDomain>> getFiveDaysWeatherByCity(String cityName) async {
     var isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
       var onlineData = await _weatherApi.fiveDayForecastByCityName(cityName);

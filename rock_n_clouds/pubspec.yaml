@@ -37,9 +37,8 @@ dependencies:
   result_dart: ^1.1.1
   weather: ^3.1.1
   geolocator: ^12.0.0
-  hive: ^2.2.3
   connectivity_plus: ^6.0.3
-  # hive_flutter: ^2.2.3
+  hive_flutter: ^1.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -49,8 +48,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # hive_generator: ^2.2.3
-  # build_runner: any
+  hive_generator: ^2.0.1
+  build_runner: any
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

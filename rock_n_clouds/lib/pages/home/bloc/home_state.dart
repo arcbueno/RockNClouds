@@ -1,9 +1,9 @@
-import 'package:weather/weather.dart';
+import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 
 class HomeState {
   final bool isLoading;
   final String? error;
-  final Weather? currentWeather;
+  final WeatherDomain? currentWeather;
 
   bool get isError => error != null;
 
@@ -12,7 +12,7 @@ class HomeState {
   HomeState copyWith({
     bool? isLoading,
     String? error,
-    Weather? currentWeather,
+    WeatherDomain? currentWeather,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,

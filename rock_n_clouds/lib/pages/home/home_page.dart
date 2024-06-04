@@ -25,7 +25,15 @@ class _HomePageState extends State<HomePage> {
     return BlocBuilder<HomeBloc, HomeState>(
       bloc: bloc,
       builder: (context, state) {
-        return Text(state.currentWeather?.date.toString() ?? '');
+        return Scaffold(
+          body: Column(
+            children: [
+              Text(state.currentWeather?.date.toString() ?? ''),
+              Text(state.error ?? ''),
+              Text(state.isLoading ? 'Loading' : ''),
+            ],
+          ),
+        );
       },
     );
   }

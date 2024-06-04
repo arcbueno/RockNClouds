@@ -1,8 +1,7 @@
 import 'package:result_dart/result_dart.dart';
-import 'package:rock_n_clouds/exceptions/unexpected_error.dart';
+import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 import 'package:rock_n_clouds/repositories/weather_repository.dart';
 import 'package:rock_n_clouds/service_locator.dart';
-import 'package:weather/weather.dart';
 
 class WeatherService {
   final WeatherRepository _repository;
@@ -10,49 +9,43 @@ class WeatherService {
   WeatherService([WeatherRepository? repository])
       : _repository = repository ?? getIt.get<WeatherRepository>();
 
-  Future<Result<Weather, Exception>> getCurrentWeather(
+  Future<Result<WeatherDomain, Exception>> getCurrentWeather(
       double lat, double lon) async {
     try {
       var result = await _repository.getCurrentWeather(lat, lon);
       return Result.success(result);
     } catch (e) {
-      return _errorHandler(e) as Failure<Weather, Exception>;
+      return Failure(Exception(e.toString()));
     }
   }
 
-  Future<Result<Weather, Exception>> getWeatherByCity(String cityName) async {
+  Future<Result<WeatherDomain, Exception>> getWeatherByCity(
+      String cityName) async {
     try {
       var result = await _repository.getWeatherByCity(cityName);
       return Result.success(result);
     } catch (e) {
-      return _errorHandler(e) as Failure<Weather, Exception>;
+      return Failure(Exception(e.toString()));
     }
   }
 
-  Future<Result<List<Weather>, Exception>> getFiveDaysWeather(
+  Future<Result<List<WeatherDomain>, Exception>> getFiveDaysWeather(
       double lat, double lon) async {
     try {
       var result = await _repository.getFiveDaysWeather(lat, lon);
       return Result.success(result);
     } catch (e) {
-      return _errorHandler(e) as Failure<List<Weather>, Exception>;
+      return Failure(Exception(e.toString()));
     }
   }
 
-  Future<Result<List<Weather>, Exception>> getFiveDaysWeatherByCity(
+  Future<Result<List<WeatherDomain>, Exception>> getFiveDaysWeatherByCity(
       String cityName) async {
     try {
       var result = await _repository.getFiveDaysWeatherByCity(cityName);
       return Result.success(result);
     } catch (e) {
-      return _errorHandler(e) as Failure<List<Weather>, Exception>;
+      return Failure(Exception(e.toString()));
     }
-  }
-
-  Failure _errorHandler(dynamic error) {
-    if (error is Exception) {
-      return Failure(error);
-    }
-    return Failure(UnexpectedError());
   }
 }
