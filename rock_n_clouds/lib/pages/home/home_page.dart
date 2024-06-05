@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rock_n_clouds/i18n/text_data.dart';
 import 'package:rock_n_clouds/pages/home/bloc/home_bloc.dart';
@@ -21,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     bloc = HomeBloc();
-    bloc.fetchCurrentWeather();
     super.initState();
   }
 
@@ -51,12 +49,35 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 16, top: 24),
-                        child: Text(
-                          state.cityName ?? TextData.currentWeather,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 16,
-                          ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              state.isCitySearch
+                                  ? (state.currentWeather?.areaName ??
+                                      TextData.currentWeather)
+                                  : TextData.currentWeather,
+                              style: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 16,
+                              ),
+                            ),
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                state.isCityAsFavorite
+                                    ? bloc.removeCityFromFavorites()
+                                    : bloc.addCurrentCityAsFavorite();
+                              },
+                              icon: Icon(
+                                state.isCityAsFavorite
+                                    ? Icons.star
+                                    : Icons.star_border,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       if (state.currentWeather != null)
@@ -64,22 +85,25 @@ class _HomePageState extends State<HomePage> {
                           weather: state.currentWeather!,
                         ),
                       if (state.nextFiveDaysWeather.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 16),
-                              child: Text(
-                                TextData.nextFiveDays,
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 16,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Text(
+                                  TextData.nextFiveDays,
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
-                            ),
-                            ...state.nextFiveDaysWeather
-                                .map((e) => WeatherListTile(weather: e)),
-                          ],
+                              ...state.nextFiveDaysWeather
+                                  .map((e) => WeatherListTile(weather: e)),
+                            ],
+                          ),
                         ),
                     ],
                   ),

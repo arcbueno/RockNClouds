@@ -7,16 +7,7 @@ import 'package:weather/weather.dart';
 class WeatherDao {
   late final Box<WeatherDomain> _box;
 
-  WeatherDao() {
-    if (!Hive.isAdapterRegistered(WeatherDomainAdapter().typeId)) {
-      Hive.registerAdapter<WeatherDomain>(WeatherDomainAdapter());
-    }
-    if (!Hive.isAdapterRegistered(TemperatureDomainAdapter().typeId)) {
-      Hive.registerAdapter<TemperatureDomain>(TemperatureDomainAdapter());
-    }
-    Hive.openBox<WeatherDomain>(Constants.weatherBoxName).then(
-        (value) => _box = Hive.box<WeatherDomain>(Constants.weatherBoxName));
-  }
+  WeatherDao() : _box = Hive.box<WeatherDomain>(Constants.weatherBoxName);
 
   WeatherDomain getCurrentWeather(double lat, double lon) {
     return _box.values.lastWhere((element) =>
