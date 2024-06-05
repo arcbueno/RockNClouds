@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rock_n_clouds/i18n/text_data.dart';
 import 'package:rock_n_clouds/pages/home/bloc/home_bloc.dart';
 import 'package:rock_n_clouds/pages/home/bloc/home_state.dart';
+import 'package:rock_n_clouds/widgets/custom_form_field.dart';
+import 'package:rock_n_clouds/widgets/weather_list_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final HomeBloc bloc;
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -26,11 +31,82 @@ class _HomePageState extends State<HomePage> {
       bloc: bloc,
       builder: (context, state) {
         return Scaffold(
-          body: Column(
+          appBar: AppBar(
+            title: const Text(TextData.rocNClouds),
+          ),
+          body: Stack(
             children: [
-              Text(state.currentWeather?.date.toString() ?? ''),
-              Text(state.error ?? ''),
-              Text(state.isLoading ? 'Loading' : ''),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomFormField(
+                        label: TextData.searchByCity,
+                        controller: searchController,
+                        onSubmit: () {
+                          bloc.getWeatherByCityName(searchController.text);
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, top: 24),
+                        child: Text(
+                          state.cityName ?? TextData.currentWeather,
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      if (state.currentWeather != null)
+                        WeatherListTile(
+                          weather: state.currentWeather!,
+                        ),
+                      if (state.nextFiveDaysWeather.isNotEmpty)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 16),
+                              child: Text(
+                                TextData.nextFiveDays,
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            ...state.nextFiveDaysWeather
+                                .map((e) => WeatherListTile(weather: e)),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              if (state.isError)
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        tileColor: Theme.of(context).colorScheme.error,
+                        title: Text(
+                          state.error!,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onError,
+                              fontSize: 20),
+                        ),
+                      ),
+                    )),
+              if (state.isLoading)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
             ],
           ),
         );

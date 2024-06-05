@@ -34,9 +34,60 @@ class HomeBloc extends Cubit<HomeState> {
   }
 
   Future<void> _getWeatherByCoordinates(double lat, double long) async {
+    emit(state.copyWith(isLoading: true));
     var result = await _weatherService.getCurrentWeather(lat, long);
     return result.fold((success) {
-      emit(state.copyWith(isLoading: false, currentWeather: success));
+      emit(state.copyWith(
+        isLoading: false,
+        currentWeather: success,
+        isCitySearch: false,
+      ));
+      _getFiveDaysWeatherByCoordinates(lat, long);
+    }, (failure) {
+      emit(state.copyWith(isLoading: false, error: failure.toString()));
+    });
+  }
+
+  Future<void> _getFiveDaysWeatherByCoordinates(double lat, double long) async {
+    emit(state.copyWith(isLoading: true));
+    var result = await _weatherService.getFiveDaysWeather(lat, long);
+    return result.fold((success) {
+      emit(state.copyWith(
+        isLoading: false,
+        nextFiveDaysWeather: success,
+        isCitySearch: false,
+      ));
+    }, (failure) {
+      emit(state.copyWith(isLoading: false, error: failure.toString()));
+    });
+  }
+
+  Future<void> getWeatherByCityName(String name) async {
+    emit(state.copyWith(isLoading: true));
+    var result = await _weatherService.getWeatherByCity(name);
+    return result.fold((success) {
+      emit(state.copyWith(
+        isLoading: false,
+        currentWeather: success,
+        isCitySearch: true,
+        cityName: name,
+      ));
+      _getFiveDaysWeatherByCityName(name);
+    }, (failure) {
+      emit(state.copyWith(isLoading: false, error: failure.toString()));
+    });
+  }
+
+  Future<void> _getFiveDaysWeatherByCityName(String name) async {
+    emit(state.copyWith(isLoading: true));
+    var result = await _weatherService.getFiveDaysWeatherByCity(name);
+    return result.fold((success) {
+      emit(state.copyWith(
+        isLoading: false,
+        nextFiveDaysWeather: success,
+        isCitySearch: true,
+        cityName: name,
+      ));
     }, (failure) {
       emit(state.copyWith(isLoading: false, error: failure.toString()));
     });
