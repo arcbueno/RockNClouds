@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rock_n_clouds/i18n/text_data.dart';
 import 'package:rock_n_clouds/pages/home/bloc/home_bloc.dart';
 import 'package:rock_n_clouds/pages/home/bloc/home_state.dart';
+import 'package:rock_n_clouds/widgets/custom_bottom_navigator.dart';
 import 'package:rock_n_clouds/widgets/custom_form_field.dart';
 import 'package:rock_n_clouds/widgets/weather_list_tile.dart';
 
@@ -29,6 +30,9 @@ class _HomePageState extends State<HomePage> {
       bloc: bloc,
       builder: (context, state) {
         return Scaffold(
+          bottomNavigationBar: const CustomBottomNavigator(
+            currentRoute: BottomNavigatorRoutes.home,
+          ),
           appBar: AppBar(
             title: const Text(TextData.rocNClouds),
           ),
