@@ -16,4 +16,6 @@ class TextData {
   static const String searchByCity = 'Search by city';
 
   static const String favorites = 'Favorites';
+
+  static const String searchFieldError = 'Search field error';
 }

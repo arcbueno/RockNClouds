@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weather/weather.dart';
+
 part 'weather_domain.g.dart';
 
 @HiveType(typeId: 1)
@@ -106,6 +107,67 @@ class WeatherDomain extends HiveObject {
       humidity: weather.humidity,
       cloudiness: weather.cloudiness,
     );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is WeatherDomain &&
+        other.country == country &&
+        other.areaName == areaName &&
+        other.weatherMain == weatherMain &&
+        other.weatherDescription == weatherDescription &&
+        other.weatherIcon == weatherIcon &&
+        other.temperature == temperature &&
+        other.tempMin == tempMin &&
+        other.tempMax == tempMax &&
+        other.tempFeelsLike == tempFeelsLike &&
+        other.date == date &&
+        other.sunrise == sunrise &&
+        other.sunset == sunset &&
+        other.latitude == latitude &&
+        other.longitude == longitude &&
+        other.pressure == pressure &&
+        other.windSpeed == windSpeed &&
+        other.windDegree == windDegree &&
+        other.windGust == windGust &&
+        other.humidity == humidity &&
+        other.cloudiness == cloudiness &&
+        other.rainLastHour == rainLastHour &&
+        other.rainLast3Hours == rainLast3Hours &&
+        other.snowLastHour == snowLastHour &&
+        other.snowLast3Hours == snowLast3Hours &&
+        other.weatherConditionCode == weatherConditionCode;
+  }
+
+  @override
+  int get hashCode {
+    return country.hashCode ^
+        areaName.hashCode ^
+        weatherMain.hashCode ^
+        weatherDescription.hashCode ^
+        weatherIcon.hashCode ^
+        temperature.hashCode ^
+        tempMin.hashCode ^
+        tempMax.hashCode ^
+        tempFeelsLike.hashCode ^
+        date.hashCode ^
+        sunrise.hashCode ^
+        sunset.hashCode ^
+        latitude.hashCode ^
+        longitude.hashCode ^
+        pressure.hashCode ^
+        windSpeed.hashCode ^
+        windDegree.hashCode ^
+        windGust.hashCode ^
+        humidity.hashCode ^
+        cloudiness.hashCode ^
+        rainLastHour.hashCode ^
+        rainLast3Hours.hashCode ^
+        snowLastHour.hashCode ^
+        snowLast3Hours.hashCode ^
+        weatherConditionCode.hashCode;
   }
 }
 

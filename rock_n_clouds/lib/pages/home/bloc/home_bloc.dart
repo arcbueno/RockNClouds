@@ -43,10 +43,9 @@ class HomeBloc extends Cubit<HomeState> {
 
   Future<void> fetchCurrentWeather() async {
     emit(state.copyWith(isLoading: true));
-    (double lat, double long) coordinates = (0, 0);
     var result = await _geolocationService.getCurrentLocation();
     result.fold(
-      (success) => coordinates = success,
+      (success) => _getWeatherByCoordinates(success.$1, success.$2),
       (failure) => emit(
         state.copyWith(
           isLoading: false,
@@ -54,10 +53,6 @@ class HomeBloc extends Cubit<HomeState> {
         ),
       ),
     );
-
-    if (state.isError) return;
-
-    return _getWeatherByCoordinates(coordinates.$1, coordinates.$2);
   }
 
   void verifyCurrentCityIsFavorite() {
@@ -100,6 +95,11 @@ class HomeBloc extends Cubit<HomeState> {
   }
 
   Future<void> getWeatherByCityName(String name) async {
+    if (name.isEmpty) {
+      fetchCurrentWeather();
+      return;
+    }
+
     emit(state.copyWith(isLoading: true));
     var result = await _weatherService.getWeatherByCity(name);
     return result.fold((success) {
