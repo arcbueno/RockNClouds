@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rock_n_clouds/i18n/text_data.dart';
-import 'package:rock_n_clouds/pages/home/bloc/home_bloc.dart';
-import 'package:rock_n_clouds/pages/home/bloc/home_state.dart';
+import 'package:rock_n_clouds/pages/search/bloc/search_bloc.dart';
+import 'package:rock_n_clouds/pages/search/bloc/search_state.dart';
 import 'package:rock_n_clouds/widgets/custom_bottom_navigator.dart';
-import 'package:rock_n_clouds/widgets/custom_form_field.dart';
+import 'package:rock_n_clouds/widgets/search_field.dart';
+import 'package:rock_n_clouds/widgets/show_error_widget.dart';
 import 'package:rock_n_clouds/widgets/weather_list_tile.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  late final HomeBloc bloc;
+class _SearchPageState extends State<SearchPage> {
+  late final SearchBloc bloc;
   final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
-    bloc = HomeBloc();
+    bloc = SearchBloc();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocBuilder<SearchBloc, SearchState>(
       bloc: bloc,
       builder: (context, state) {
         return Scaffold(
           bottomNavigationBar: const CustomBottomNavigator(
-            currentRoute: BottomNavigatorRoutes.home,
+            currentRoute: BottomNavigatorRoutes.search,
           ),
           appBar: AppBar(
-            title: const Text(TextData.rocNClouds),
+            title: const Text(TextData.search),
           ),
           body: Stack(
             children: [
@@ -44,23 +45,10 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        children: [
-                          CustomFormField(
-                            label: TextData.searchByCity,
-                            controller: searchController,
-                            onSubmit: () {
-                              bloc.getWeatherByCityName(searchController.text);
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 12),
-                            child: Text(
-                              TextData.searchFieldTip,
-                              style: TextStyle(color: Colors.grey.shade600),
-                            ),
-                          )
-                        ],
+                      SearchField(
+                        searchController: searchController,
+                        onSubmit: () =>
+                            bloc.getWeatherByCityName(searchController.text),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 16, top: 24),
@@ -126,22 +114,11 @@ class _HomePageState extends State<HomePage> {
               ),
               if (state.isError)
                 Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        tileColor: Theme.of(context).colorScheme.error,
-                        title: Text(
-                          state.error!,
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.onError,
-                              fontSize: 20),
-                        ),
-                      ),
-                    )),
+                  alignment: Alignment.bottomCenter,
+                  child: ShowErrorWidget(
+                    error: state.error!,
+                  ),
+                ),
               if (state.isLoading)
                 const Center(
                   child: CircularProgressIndicator(),

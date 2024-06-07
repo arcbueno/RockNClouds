@@ -1,18 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rock_n_clouds/models/favorite_city/favorite_city.dart';
-import 'package:rock_n_clouds/pages/home/bloc/home_state.dart';
+import 'package:rock_n_clouds/pages/search/bloc/search_state.dart';
 import 'package:rock_n_clouds/service_locator.dart';
 import 'package:rock_n_clouds/services/favorite_city_service.dart';
 import 'package:rock_n_clouds/services/geolocation_service.dart';
 import 'package:rock_n_clouds/services/weather_service.dart';
 import 'package:string_normalizer/string_normalizer.dart';
 
-class HomeBloc extends Cubit<HomeState> {
+class SearchBloc extends Cubit<SearchState> {
   final WeatherService _weatherService;
   final GeolocationService _geolocationService;
   final FavoriteCityService _favoriteCityService;
 
-  HomeBloc(
+  SearchBloc(
       [WeatherService? weatherService,
       GeolocationService? geolocationService,
       FavoriteCityService? favoriteCityService])
@@ -21,7 +21,7 @@ class HomeBloc extends Cubit<HomeState> {
             geolocationService ?? getIt.get<GeolocationService>(),
         _favoriteCityService =
             favoriteCityService ?? getIt.get<FavoriteCityService>(),
-        super(HomeState(isLoading: false)) {
+        super(SearchState(isLoading: false)) {
     onInit();
   }
 

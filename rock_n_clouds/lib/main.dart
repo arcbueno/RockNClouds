@@ -3,7 +3,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rock_n_clouds/models/favorite_city/favorite_city.dart';
 import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 import 'package:rock_n_clouds/pages/favorites/favorites_page.dart';
-import 'package:rock_n_clouds/pages/home/home_page.dart';
+import 'package:rock_n_clouds/pages/next_shows/next_shows_page.dart';
+import 'package:rock_n_clouds/pages/search/search_page.dart';
 import 'package:rock_n_clouds/service_locator.dart';
 import 'package:rock_n_clouds/utils/constants.dart';
 
@@ -40,9 +41,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
       ),
-      initialRoute: '/',
+      initialRoute: '/nextShows',
       routes: {
-        '/': (context) => const HomePage(),
+        '/nextShows': (context) => const NextShowsPage(),
+        '/search': (context) => const SearchPage(),
         '/favorites': (context) => const FavoritesPage(),
       },
     );

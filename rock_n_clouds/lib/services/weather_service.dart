@@ -69,6 +69,20 @@ class WeatherService {
     }
   }
 
+  Future<Result<Map<String, List<WeatherDomain>>, Exception>>
+      getAllWeatherByCitiesNames(List<String> cities) async {
+    try {
+      Map<String, List<WeatherDomain>> finalResult = {};
+      for (var city in cities) {
+        var weatherList = await _repository.getAllWeatherByCity(city);
+        finalResult[city] = weatherList;
+      }
+      return Result.success(finalResult);
+    } catch (e) {
+      return (await _errorHandler(e)).toFailure();
+    }
+  }
+
   Future<Exception> _errorHandler(dynamic e) async {
     if (!await NetworkUtils.isOnline()) {
       return NetworkConnectionFailed();

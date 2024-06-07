@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rock_n_clouds/i18n/text_data.dart';
 
 class CustomBottomNavigator extends StatelessWidget {
   final BottomNavigatorRoutes currentRoute;
@@ -15,9 +16,12 @@ class CustomBottomNavigator extends StatelessWidget {
         if (index == BottomNavigatorRoutes.values.indexOf(currentRoute)) return;
         switch (index) {
           case 0:
-            Navigator.of(context).pushReplacementNamed('/');
+            Navigator.of(context).pushReplacementNamed('/nextShows');
             break;
           case 1:
+            Navigator.of(context).pushReplacementNamed('/search');
+            break;
+          case 2:
             Navigator.of(context).pushReplacementNamed('/favorites');
             break;
         }
@@ -26,14 +30,19 @@ class CustomBottomNavigator extends StatelessWidget {
       selectedIndex: BottomNavigatorRoutes.values.indexOf(currentRoute),
       destinations: const <Widget>[
         NavigationDestination(
-          selectedIcon: Icon(Icons.home),
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
+          selectedIcon: Icon(Icons.next_week_rounded),
+          icon: Icon(Icons.next_week_outlined),
+          label: TextData.nextShows,
+        ),
+        NavigationDestination(
+          selectedIcon: Icon(Icons.search),
+          icon: Icon(Icons.search),
+          label: TextData.search,
         ),
         NavigationDestination(
           selectedIcon: Icon(Icons.star),
           icon: Icon(Icons.star_border_purple500_rounded),
-          label: 'Home',
+          label: TextData.favorites,
         ),
       ],
     );
@@ -41,6 +50,7 @@ class CustomBottomNavigator extends StatelessWidget {
 }
 
 enum BottomNavigatorRoutes {
-  home,
+  nextShows,
+  search,
   favorites,
 }

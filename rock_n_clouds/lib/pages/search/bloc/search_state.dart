@@ -1,7 +1,7 @@
 import 'package:rock_n_clouds/models/favorite_city/favorite_city.dart';
 import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 
-class HomeState {
+class SearchState {
   final bool isLoading;
   final String? error;
   final WeatherDomain? currentWeather;
@@ -13,7 +13,7 @@ class HomeState {
 
   bool get isError => error != null;
 
-  HomeState({
+  SearchState({
     required this.isLoading,
     this.error,
     this.currentWeather,
@@ -24,7 +24,7 @@ class HomeState {
     this.favorites = const [],
   });
 
-  HomeState copyWith({
+  SearchState copyWith({
     bool? isLoading,
     String? error,
     WeatherDomain? currentWeather,
@@ -34,7 +34,7 @@ class HomeState {
     bool? isCityAsFavorite,
     List<FavoriteCity>? favorites,
   }) {
-    return HomeState(
+    return SearchState(
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       currentWeather: currentWeather ?? this.currentWeather,
@@ -46,7 +46,7 @@ class HomeState {
     );
   }
 
-  HomeState copyWithouErrors({
+  SearchState copyWithouErrors({
     bool? isLoading,
     WeatherDomain? currentWeather,
     List<WeatherDomain>? nextFiveDaysWeather,
@@ -55,7 +55,7 @@ class HomeState {
     bool? isCityAsFavorite,
     List<FavoriteCity>? favorites,
   }) {
-    return HomeState(
+    return SearchState(
       isLoading: isLoading ?? this.isLoading,
       error: null,
       currentWeather: currentWeather ?? this.currentWeather,

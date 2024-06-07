@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rock_n_clouds/i18n/text_data.dart';
 import 'package:rock_n_clouds/pages/favorites/bloc/favorites_bloc.dart';

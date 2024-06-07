@@ -25,4 +25,9 @@ class TextData {
   static const String cityNotFound = 'City not found';
 
   static const String serverError = 'Server error';
+
+  static const String home = 'Home';
+  static const String nextShows = 'Next shows';
+
+  static const String search = 'Search';
 }
