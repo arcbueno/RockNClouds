@@ -1,10 +1,13 @@
 import 'package:result_dart/result_dart.dart';
+import 'package:rock_n_clouds/exceptions/city_not_found_exception.dart';
 import 'package:rock_n_clouds/exceptions/network_connection_failed.dart';
+import 'package:rock_n_clouds/exceptions/server_error_exception.dart';
 import 'package:rock_n_clouds/models/favorite_city/favorite_city.dart';
 import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 import 'package:rock_n_clouds/repositories/weather_repository.dart';
 import 'package:rock_n_clouds/service_locator.dart';
 import 'package:rock_n_clouds/utils/network_utils.dart';
+import 'package:weather/weather.dart';
 
 class WeatherService {
   final WeatherRepository _repository;
@@ -18,10 +21,7 @@ class WeatherService {
       var result = await _repository.getCurrentWeather(lat, lon);
       return Result.success(result);
     } catch (e) {
-      if (!await NetworkUtils.isOnline()) {
-        return Failure(NetworkConnectionFailed());
-      }
-      return Failure(Exception(e.toString()));
+      return (await _errorHandler(e)).toFailure();
     }
   }
 
@@ -31,10 +31,7 @@ class WeatherService {
       var result = await _repository.getWeatherByCity(cityName);
       return Result.success(result);
     } catch (e) {
-      if (!await NetworkUtils.isOnline()) {
-        return Failure(NetworkConnectionFailed());
-      }
-      return Failure(Exception(e.toString()));
+      return (await _errorHandler(e)).toFailure();
     }
   }
 
@@ -44,10 +41,7 @@ class WeatherService {
       var result = await _repository.getFiveDaysWeather(lat, lon);
       return Result.success(result);
     } catch (e) {
-      if (!await NetworkUtils.isOnline()) {
-        return Failure(NetworkConnectionFailed());
-      }
-      return Failure(Exception(e.toString()));
+      return (await _errorHandler(e)).toFailure();
     }
   }
 
@@ -57,10 +51,7 @@ class WeatherService {
       var result = await _repository.getFiveDaysWeatherByCity(cityName);
       return Result.success(result);
     } catch (e) {
-      if (!await NetworkUtils.isOnline()) {
-        return Failure(NetworkConnectionFailed());
-      }
-      return Failure(Exception(e.toString()));
+      return (await _errorHandler(e)).toFailure();
     }
   }
 
@@ -74,10 +65,23 @@ class WeatherService {
       }
       return Result.success(finalResult);
     } catch (e) {
-      if (!await NetworkUtils.isOnline()) {
-        return Failure(NetworkConnectionFailed());
-      }
-      return Failure(Exception(e.toString()));
+      return (await _errorHandler(e)).toFailure();
     }
+  }
+
+  Future<Exception> _errorHandler(dynamic e) async {
+    if (!await NetworkUtils.isOnline()) {
+      return NetworkConnectionFailed();
+    }
+    if (e is OpenWeatherAPIException) {
+      if (e.toString().contains('"cod":"404"')) {
+        return CityNotFoundException();
+      }
+      if (e.toString().contains('"cod":"500"')) {
+        return ServerErrorException();
+      }
+      // Add more verifications later
+    }
+    return Exception(e.toString());
   }
 }

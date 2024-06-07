@@ -27,7 +27,7 @@ class WeatherDao {
       var city = data[0].trim();
       var country = data[1].trim();
 
-      if (city.isEmpty || country.isNotEmpty) throw EmptySearchException();
+      if (city.isEmpty || country.isEmpty) throw EmptySearchException();
       return _getWeatherByCityAndCountry(city, country);
     }
     return _box.values.lastWhere((element) =>

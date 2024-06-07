@@ -21,4 +21,8 @@ class TextData {
 
   static const String searchFieldTip =
       'Tip: to search with country, add a comma and the country code. Example: "New York, US"';
+
+  static const String cityNotFound = 'City not found';
+
+  static const String serverError = 'Server error';
 }
