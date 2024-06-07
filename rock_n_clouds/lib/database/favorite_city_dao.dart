@@ -17,6 +17,7 @@ class FavoriteCityDao {
   }
 
   Future<void> deleteFavoriteCity(FavoriteCity favoriteCity) async {
-    await _box.delete(favoriteCity);
+    var index = _box.values.toList().indexOf(favoriteCity);
+    await _box.deleteAt(index);
   }
 }

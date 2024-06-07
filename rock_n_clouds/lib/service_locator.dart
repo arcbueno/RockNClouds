@@ -14,7 +14,7 @@ final getIt = GetIt.instance;
 class ServiceLocator {
   static void setup() {
     getIt.registerSingleton(
-        WeatherFactory(Constants.apiKey, language: Language.ENGLISH));
+        WeatherFactory(Constants.apiKey, language: Language.PORTUGUESE_BRAZIL));
     getIt.registerSingleton<WeatherDao>(WeatherDao());
     getIt.registerSingleton<FavoriteCityDao>(FavoriteCityDao());
 

@@ -10,7 +10,7 @@ class WeatherListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(weather.areaName?.toString() ?? ''),
+      title: Text('${weather.areaName ?? ''} - ${weather.country ?? ''}'),
       subtitle: Text(DateTimeUtils.dateTimeFormat.format(weather.date!)),
       trailing: Text(
         '${weather.temperature?.celsius?.toInt()}°C',

@@ -51,4 +51,13 @@ class WeatherRepository {
     }
     return _weatherDao.getFiveDaysWeatherByCity(cityName);
   }
+
+  Future<List<WeatherDomain>> getAllWeatherByCity(String cityName) async {
+    final weatherList = <WeatherDomain>[];
+    var currentWeather = await getWeatherByCity(cityName);
+    var nextFiveDays = await getFiveDaysWeatherByCity(cityName);
+    weatherList.add(currentWeather);
+    weatherList.addAll(nextFiveDays);
+    return weatherList;
+  }
 }

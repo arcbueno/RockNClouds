@@ -1,5 +1,6 @@
 import 'package:result_dart/result_dart.dart';
 import 'package:rock_n_clouds/exceptions/network_connection_failed.dart';
+import 'package:rock_n_clouds/models/favorite_city/favorite_city.dart';
 import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 import 'package:rock_n_clouds/repositories/weather_repository.dart';
 import 'package:rock_n_clouds/service_locator.dart';
@@ -55,6 +56,23 @@ class WeatherService {
     try {
       var result = await _repository.getFiveDaysWeatherByCity(cityName);
       return Result.success(result);
+    } catch (e) {
+      if (!await NetworkUtils.isOnline()) {
+        return Failure(NetworkConnectionFailed());
+      }
+      return Failure(Exception(e.toString()));
+    }
+  }
+
+  Future<Result<Map<FavoriteCity, List<WeatherDomain>>, Exception>>
+      getAllWeatherByFavoriteCities(List<FavoriteCity> cities) async {
+    try {
+      Map<FavoriteCity, List<WeatherDomain>> finalResult = {};
+      for (var city in cities) {
+        var weatherList = await _repository.getAllWeatherByCity(city.areaName!);
+        finalResult[city] = weatherList;
+      }
+      return Result.success(finalResult);
     } catch (e) {
       if (!await NetworkUtils.isOnline()) {
         return Failure(NetworkConnectionFailed());

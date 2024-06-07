@@ -45,4 +45,25 @@ class HomeState {
       favorites: favorites ?? this.favorites,
     );
   }
+
+  HomeState copyWithouErrors({
+    bool? isLoading,
+    WeatherDomain? currentWeather,
+    List<WeatherDomain>? nextFiveDaysWeather,
+    bool? isCitySearch,
+    String? cityName,
+    bool? isCityAsFavorite,
+    List<FavoriteCity>? favorites,
+  }) {
+    return HomeState(
+      isLoading: isLoading ?? this.isLoading,
+      error: null,
+      currentWeather: currentWeather ?? this.currentWeather,
+      nextFiveDaysWeather: nextFiveDaysWeather ?? this.nextFiveDaysWeather,
+      isCitySearch: isCitySearch ?? this.isCitySearch,
+      cityName: cityName ?? this.cityName,
+      isCityAsFavorite: isCityAsFavorite ?? this.isCityAsFavorite,
+      favorites: favorites ?? this.favorites,
+    );
+  }
 }

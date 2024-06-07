@@ -14,4 +14,6 @@ class TextData {
   static const String networkConnectionError = 'Network connection error';
 
   static const String searchByCity = 'Search by city';
+
+  static const String favorites = 'Favorites';
 }

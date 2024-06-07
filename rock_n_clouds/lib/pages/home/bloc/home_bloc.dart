@@ -73,7 +73,7 @@ class HomeBloc extends Cubit<HomeState> {
     emit(state.copyWith(isLoading: true));
     var result = await _weatherService.getCurrentWeather(lat, long);
     return result.fold((success) {
-      emit(state.copyWith(
+      emit(state.copyWithouErrors(
         isLoading: false,
         currentWeather: success,
         isCitySearch: false,
@@ -89,7 +89,7 @@ class HomeBloc extends Cubit<HomeState> {
     emit(state.copyWith(isLoading: true));
     var result = await _weatherService.getFiveDaysWeather(lat, long);
     return result.fold((success) {
-      emit(state.copyWith(
+      emit(state.copyWithouErrors(
         isLoading: false,
         nextFiveDaysWeather: success,
         isCitySearch: false,
@@ -103,7 +103,7 @@ class HomeBloc extends Cubit<HomeState> {
     emit(state.copyWith(isLoading: true));
     var result = await _weatherService.getWeatherByCity(name);
     return result.fold((success) {
-      emit(state.copyWith(
+      emit(state.copyWithouErrors(
         isLoading: false,
         currentWeather: success,
         isCitySearch: true,
@@ -120,7 +120,7 @@ class HomeBloc extends Cubit<HomeState> {
     emit(state.copyWith(isLoading: true));
     var result = await _weatherService.getFiveDaysWeatherByCity(name);
     return result.fold((success) {
-      emit(state.copyWith(
+      emit(state.copyWithouErrors(
         isLoading: false,
         nextFiveDaysWeather: success,
         isCitySearch: true,
@@ -138,7 +138,7 @@ class HomeBloc extends Cubit<HomeState> {
         .first;
     var result = await _favoriteCityService.delete(favoriteData);
     return result.fold((success) {
-      emit(state.copyWith(isLoading: false, isCityAsFavorite: false));
+      emit(state.copyWithouErrors(isLoading: false, isCityAsFavorite: false));
     }, (failure) {
       emit(state.copyWith(isLoading: false, error: failure.toString()));
     });
