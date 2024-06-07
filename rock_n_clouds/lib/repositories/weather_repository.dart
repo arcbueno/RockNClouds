@@ -16,7 +16,7 @@ class WeatherRepository {
     var isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
       var onlineData = await _weatherApi.currentWeatherByLocation(lat, lon);
-      await _weatherDao.addWeather(onlineData);
+      await _weatherDao.addWeather(WeatherDomain.fromWeather(onlineData));
       return _weatherDao.getCurrentWeather(lat, lon);
     }
     return _weatherDao.getCurrentWeather(lat, lon);
@@ -26,7 +26,7 @@ class WeatherRepository {
     var isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
       var onlineData = await _weatherApi.currentWeatherByCityName(cityName);
-      await _weatherDao.addWeather(onlineData);
+      await _weatherDao.addWeather(WeatherDomain.fromWeather(onlineData));
       return _weatherDao.getWeatherByCity(cityName);
     }
     return _weatherDao.getWeatherByCity(cityName);
@@ -36,7 +36,8 @@ class WeatherRepository {
     var isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
       var onlineData = await _weatherApi.fiveDayForecastByLocation(lat, lon);
-      await _weatherDao.addWeatherList(onlineData);
+      await _weatherDao.addWeatherList(
+          onlineData.map((e) => WeatherDomain.fromWeather(e)).toList());
       return _weatherDao.getFiveDaysWeather(lat, lon);
     }
     return _weatherDao.getFiveDaysWeather(lat, lon);
@@ -46,7 +47,8 @@ class WeatherRepository {
     var isOnline = await NetworkUtils.isOnline();
     if (isOnline) {
       var onlineData = await _weatherApi.fiveDayForecastByCityName(cityName);
-      await _weatherDao.addWeatherList(onlineData);
+      await _weatherDao.addWeatherList(
+          onlineData.map((e) => WeatherDomain.fromWeather(e)).toList());
       return _weatherDao.getFiveDaysWeatherByCity(cityName);
     }
     return _weatherDao.getFiveDaysWeatherByCity(cityName);

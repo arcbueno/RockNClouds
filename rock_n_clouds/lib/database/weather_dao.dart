@@ -3,7 +3,6 @@ import 'package:rock_n_clouds/exceptions/empty_search_exception.dart';
 import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 import 'package:rock_n_clouds/utils/constants.dart';
 import 'package:rock_n_clouds/utils/string_extensions.dart';
-import 'package:weather/weather.dart';
 
 class WeatherDao {
   late final Box<WeatherDomain> _box;
@@ -132,8 +131,7 @@ class WeatherDao {
     return finalValues;
   }
 
-  Future<void> addWeather(Weather weather) async {
-    var weatherDomain = WeatherDomain.fromWeather(weather);
+  Future<void> addWeather(WeatherDomain weather) async {
     var existendList = _box.values.where((element) =>
         ((element.areaName ?? '').normalized().toUpperCase() ==
             (weather.areaName ?? '').normalized().toUpperCase()) &&
@@ -145,10 +143,10 @@ class WeatherDao {
     if (existendList.isNotEmpty) {
       await _box.deleteAll(existendList.map((e) => e.key).toList());
     }
-    await _box.add(weatherDomain);
+    await _box.add(weather);
   }
 
-  Future<void> addWeatherList(List<Weather> list) async {
+  Future<void> addWeatherList(List<WeatherDomain> list) async {
     await Future.forEach(list, (element) async {
       // Use the addWeather() for reuse the login inside it
       await addWeather(element);
