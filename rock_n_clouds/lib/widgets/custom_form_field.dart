@@ -30,6 +30,13 @@ class _CustomFormFieldState extends State<CustomFormField> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
+        suffix: InkWell(
+          onTap: () {
+            widget.controller.clear();
+            widget.onSubmit();
+          },
+          child: const Icon(Icons.clear),
+        ),
         suffixIcon: IconButton(
           icon: Icon(
             Icons.search,

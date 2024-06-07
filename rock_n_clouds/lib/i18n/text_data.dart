@@ -18,4 +18,7 @@ class TextData {
   static const String favorites = 'Favorites';
 
   static const String searchFieldError = 'Search field error';
+
+  static const String searchFieldTip =
+      'Tip: to search with country, add a comma and the country code. Example: "New York, US"';
 }

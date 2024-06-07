@@ -44,12 +44,23 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomFormField(
-                        label: TextData.searchByCity,
-                        controller: searchController,
-                        onSubmit: () {
-                          bloc.getWeatherByCityName(searchController.text);
-                        },
+                      Column(
+                        children: [
+                          CustomFormField(
+                            label: TextData.searchByCity,
+                            controller: searchController,
+                            onSubmit: () {
+                              bloc.getWeatherByCityName(searchController.text);
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 12),
+                            child: Text(
+                              TextData.searchFieldTip,
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                          )
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 16, top: 24),
