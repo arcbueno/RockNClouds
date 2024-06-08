@@ -24,7 +24,6 @@ class WeatherRepository {
       return await _weatherDao
           .addWeather(WeatherDomain.fromWeather(onlineData))
           .then((value) async => _weatherDao.getCurrentWeather(lat, lon));
-      // return _weatherDao.getCurrentWeather(lat, lon);
     }
     return _weatherDao.getCurrentWeather(lat, lon);
   }
@@ -32,8 +31,11 @@ class WeatherRepository {
   Future<WeatherDomain> getWeatherByCity(String cityName) async {
     var isOnline = await _networkService.isOnline();
     if (isOnline) {
+      // Fetch online data
       var onlineData = await _weatherApi.currentWeatherByCityName(cityName);
+      // Insert data locally
       await _weatherDao.addWeather(WeatherDomain.fromWeather(onlineData));
+      // Retrieve from local DB
       return _weatherDao.getWeatherByCity(cityName);
     }
     return _weatherDao.getWeatherByCity(cityName);
@@ -62,6 +64,7 @@ class WeatherRepository {
   }
 
   Future<List<WeatherDomain>> getAllWeatherByCity(String cityName) async {
+    // Gets the 6 days weather (current day + next five days)
     final weatherList = <WeatherDomain>[];
     var currentWeather = await getWeatherByCity(cityName);
     var nextFiveDays = await getFiveDaysWeatherByCity(cityName);

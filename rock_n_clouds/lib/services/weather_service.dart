@@ -87,6 +87,7 @@ class WeatherService {
   }
 
   Future<Exception> _errorHandler(dynamic e) async {
+    // Consider every error offine a network error
     if (!await _networkService.isOnline()) {
       return NetworkConnectionFailed();
     }
