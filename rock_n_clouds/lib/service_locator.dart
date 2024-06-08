@@ -5,6 +5,7 @@ import 'package:rock_n_clouds/repositories/favorite_city_repository.dart';
 import 'package:rock_n_clouds/repositories/weather_repository.dart';
 import 'package:rock_n_clouds/services/favorite_city_service.dart';
 import 'package:rock_n_clouds/services/geolocation_service.dart';
+import 'package:rock_n_clouds/services/network_service.dart';
 import 'package:rock_n_clouds/services/weather_service.dart';
 import 'package:rock_n_clouds/utils/constants.dart';
 import 'package:weather/weather.dart';
@@ -13,6 +14,7 @@ final getIt = GetIt.instance;
 
 class ServiceLocator {
   static void setup() {
+    getIt.registerSingleton<NetworkService>(NetworkService());
     getIt.registerSingleton(
         WeatherFactory(Constants.apiKey, language: Language.PORTUGUESE_BRAZIL));
     getIt.registerSingleton<WeatherDao>(WeatherDao());

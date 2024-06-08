@@ -7,7 +7,9 @@ import 'package:rock_n_clouds/utils/string_extensions.dart';
 class WeatherDao {
   late final Box<WeatherDomain> _box;
 
-  WeatherDao() : _box = Hive.box<WeatherDomain>(Constants.weatherBoxName);
+  WeatherDao([HiveInterface? hive])
+      : _box = hive?.box<WeatherDomain>(Constants.weatherBoxName) ??
+            Hive.box<WeatherDomain>(Constants.weatherBoxName);
 
   /// Get current weather by latitude and longitude
   WeatherDomain getCurrentWeather(double lat, double lon) {

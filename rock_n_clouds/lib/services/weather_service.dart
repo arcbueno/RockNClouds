@@ -6,14 +6,17 @@ import 'package:rock_n_clouds/models/favorite_city/favorite_city.dart';
 import 'package:rock_n_clouds/models/weather_domain/weather_domain.dart';
 import 'package:rock_n_clouds/repositories/weather_repository.dart';
 import 'package:rock_n_clouds/service_locator.dart';
-import 'package:rock_n_clouds/utils/network_utils.dart';
+import 'package:rock_n_clouds/services/network_service.dart';
 import 'package:weather/weather.dart';
 
 class WeatherService {
   final WeatherRepository _repository;
+  final NetworkService _networkService;
 
-  WeatherService([WeatherRepository? repository])
-      : _repository = repository ?? getIt.get<WeatherRepository>();
+  WeatherService(
+      [WeatherRepository? repository, NetworkService? networkService])
+      : _repository = repository ?? getIt.get<WeatherRepository>(),
+        _networkService = networkService ?? getIt.get<NetworkService>();
 
   Future<Result<WeatherDomain, Exception>> getCurrentWeather(
       double lat, double lon) async {
@@ -84,7 +87,7 @@ class WeatherService {
   }
 
   Future<Exception> _errorHandler(dynamic e) async {
-    if (!await NetworkUtils.isOnline()) {
+    if (!await _networkService.isOnline()) {
       return NetworkConnectionFailed();
     }
     if (e is OpenWeatherAPIException) {
