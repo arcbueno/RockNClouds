@@ -1,5 +1,15 @@
 # RockNClouds
 
+## Before executing
+Run the following commands
+```
+flutter pub get 
+flutter pub run build_runner build
+
+```
+
+This app uses HiveDB, the code generation is necessary to use the database
+
 ## Docs
 
 App libraries: 
@@ -23,7 +33,8 @@ The app is offline-first, that means all the data request is firstly fetched fro
 This offline-first approach is useful for the assurance that the data shown to the user is always locally storaged 
 
 There's 3 pages:
+
     1. Next shows -> Showing the weather for the incoming concerts and allowing the user to search for one of these cities previously defined
-    2. Search -> Showing the weather for the current location and allowing the user to search for any city and mark the city as favorite 
+    2. Search -> Showing the weather for the current location and allowing the user to search for any city and mark the city as favorite
     3. Favorites -> Showing the weather for the cities marked as favorites before
 
